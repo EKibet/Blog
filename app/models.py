@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(130))
     bio = db.Column(db.String(255))
     profile_pic = db.Column(db.String(255))
+    pitches = db.relationship('Post',backref = 'user',lazy = "dynamic")
 
 
     @property
@@ -49,3 +50,28 @@ class User(UserMixin, db.Model):
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+
+class Post(db.Model):
+    __tablename__= 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(140))
+
+    post_content = db.Column(db.String(255))
+    category = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime,index=True,default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    @classmethod
+    def retrieve_posts(cls,id):
+        posts = Post.filter_by(id=id).all()
+        return posts
+    '''
+    Pitch class represent the pitches Pitched by 
+    users. Timestamp is set to default and passsed datetime.utcnow--> function.
+    SQLAlchemy will set the field to the value of calling that function
+    and not the result of calling it without ()
+    The user_id field is initialized as a foreign key to user.id,
+    which means that it references an id value from the users table
+    '''
+
+    def __repr__(self):
+        return '{}'.format(self.body)
