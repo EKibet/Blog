@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,TextAreaField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired,Length, Email, EqualTo
-# from app.models import User
+from wtforms import StringField,TextAreaField,PasswordField,SelectField, BooleanField, SubmitField
+from wtforms.validators import ValidationError,  DataRequired,Length, Email, EqualTo
+from app.models import User
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -26,3 +26,12 @@ class RegistrationForm(FlaskForm):
     will be no results. In the event a result already exists,
     a validation error is triggered by raising ValidationError
     '''
+class PostForm(FlaskForm):
+    title = TextAreaField(description='Blog Title', validators=[DataRequired()]) 
+    post = TextAreaField(description='Blog Content', validators=[DataRequired()])
+    category = SelectField('Category', choices=[('Education','Education'),('Technology','Technology'),('Business','Business'),('News','News'),('General','General')])
+    submit = SubmitField(('Publish'))
+
+class CommentForm(FlaskForm):
+    details = StringField('Write a comment',validators=[DataRequired()])
+    submit = SubmitField('Comment')
