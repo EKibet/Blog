@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
     bio = db.Column(db.String(255))
     profile_pic = db.Column(db.String(255))
     pitches = db.relationship('Post',backref = 'user',lazy = "dynamic")
+    comments = db.relationship('Comments', backref='user', lazy="dynamic")
 
 
     @property
@@ -60,6 +61,8 @@ class Post(db.Model):
     category = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime,index=True,default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    comments = db.relationship('Comments', backref='coment', lazy="dynamic")
+
     @classmethod
     def retrieve_posts(cls,id):
         posts = Post.filter_by(id=id).all()
@@ -75,3 +78,13 @@ class Post(db.Model):
 
     def __repr__(self):
         return '{}'.format(self.body)
+       
+class Comments(db.Model):
+    __tablename__='comments'
+    id = db.Column(db.Integer,primary_key= True)
+    details = db.Column(db.String(255))
+    post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+	# def as_dict(self):
+    # 		return {'details': self.details}    
