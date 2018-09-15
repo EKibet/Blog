@@ -9,7 +9,24 @@
   </div>
 
 
-
+  {% for message in get_flashed_messages() %}
+  <div class="row">
+      <div class="col-md-4">
+  
+      </div>
+      <div class="col-md-4">
+          <div class="alert alert-success">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              {{ message }}
+              </div>
+      </div>
+      <div class="col-md-4">
+          
+      </div>
+  </div>
+  
+  
+  {% endfor %}
   <!-- Form Module-->
   <div class="module form-module">
     <div class="toggle"><i class="fa fa-times fa-pencil"></i>
@@ -17,7 +34,7 @@
     </div>
     <div class="form">
       <h2>Login to your account</h2>
-      <form action="" method="post" novalidate>
+      <form action="{{url_for('auth.login')}}" method="post" novalidate>
             {{ login_form.hidden_tag() }}
             {{ login_form.username.label }}<br>
             {{ login_form.username(size=32) }}<br>
@@ -32,11 +49,10 @@
             <p>{{ login_form.remember_me() }} {{ login_form.remember_me.label }}</p>
 
             {{ login_form.submit() }}
-      </form>
     </div>
     <div class="form">
       <h2>Create an account</h2>
-     <form action="" method="post" novalidate>
+     <form action="{{url_for('auth.register')}}" method="post" novalidate>
             {{ registration_form.hidden_tag() }}
             {{ registration_form.username.label }}<br>
             {{ registration_form.username(size=32) }}<br>
