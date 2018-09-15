@@ -23,6 +23,7 @@
               <span style="color: red;">*{{ error }}*</span>
               {% endfor %}  
               {{ PostForm.submit() }}
+              </form>
       </div>
 
       {% for post in posts%}
@@ -32,9 +33,24 @@
       <ul>{{post.category}}</ul>
       <ul>{{post.post_content}}</ul>
       <ul>
-          <a href="/comments/{{post.id}}">Add comment</a> 
+            <form action="{{url_for('main.new_comment', id=post.id)}}" method="post" novalidate>
+                    {{ form_comment.hidden_tag() }}
+                   
+                    {{ form_comment.details.label }}<br>
+                    {{ form_comment.details(size=32) }}<br>
+                    {% for error in form_comment.details.errors %}
+                    <span style="color: red;">*{{ error }}*</span>
+                    {% endfor %}  
+                    {{ form_comment.submit() }}
+                    </form>
         </ul>
+        <ul><a href="{{url_for('main.delete', id=post.id)}}">Delete</a> </ul>
 
+      {%endfor%}
+
+      {% for post in comment%}
+      <ul>{{post.details}}</ul>
+      <ul>
       {%endfor%}
       {% endblock %}
 
