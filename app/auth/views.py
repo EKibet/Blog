@@ -17,10 +17,15 @@ def index():
 ##################Registration route section#############
 @auth.route('/register', methods = ['GET','POST'])
 def register():
+    print('dddd')
+
+
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     registration_form = RegistrationForm()
     login_form = LoginForm()
+    print('dddd')
+
     if registration_form.validate_on_submit():
         user = User(username=registration_form.username.data, email=registration_form.email.data)
         user.set_password(registration_form.password.data)
@@ -87,3 +92,12 @@ def login():
     '''
 ############End Log in section##############
 
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+    '''
+    offers users the option to log out of the application
+    '''
+###############Log out route end##############

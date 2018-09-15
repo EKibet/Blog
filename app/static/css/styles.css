@@ -6,6 +6,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  .module{
+  }
   
   /* Pen Title */
   .pen-title {
@@ -36,9 +38,10 @@ body {
     background: #ffffff;
     max-width: 320px;
     width: 100%;
-    border-top: 5px solid #33b5e5;
+    border-top: 0px solid #33b5e5;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
+
   }
   .form-module .toggle {
     cursor: pointer;
