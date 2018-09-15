@@ -1,0 +1,40 @@
+{% import 'bootstrap/wtf.html' as wtf%}
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form">
+        <h2>Motion Blog</h2>
+        <form action="{{url_for('main.writer_dashboard')}}" method="post" novalidate>
+              {{ PostForm.hidden_tag() }}
+              {{ PostForm.title.label }}<br>
+              {{ PostForm.title(size=32) }}<br>
+              {% for error in PostForm.title.errors %}
+              <span style="color: red;">*{{ error }}*</span>
+              {% endfor %}
+              {{ PostForm.category.label }}<br>
+              {{ PostForm.category }}<br>
+              {% for error in PostForm.category.errors %}
+              <span style="color: red;">*{{ error }}*</span>
+              {% endfor %}
+              {{ PostForm.post.label }}<br>
+              {{ PostForm.post(size=32) }}<br>
+              {% for error in PostForm.post.errors %}
+              <span style="color: red;">*{{ error }}*</span>
+              {% endfor %}  
+              {{ PostForm.submit() }}
+      </div>
+
+      {% for post in posts%}
+      <ul>{{post.username}}</ul>
+
+      <ul>{{post.title}}</ul>
+      <ul>{{post.category}}</ul>
+      <ul>{{post.post_content}}</ul>
+      <ul>
+          <a href="/comments/{{post.id}}">Add comment</a> 
+        </ul>
+
+      {%endfor%}
+      {% endblock %}
+
