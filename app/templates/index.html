@@ -1,2 +1,92 @@
 {% import 'bootstrap/wtf.html' as wtf%}
-{{wtf.quick_form(registration_form)}}
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="pen-title">
+    <h1>Blog</h1><span>Write <i class='fa fa-paint-brush'></i> + <i class='fa fa-code'></i> by <a href='#'>Blog Team</a></span>
+  </div>
+
+
+
+  <!-- Form Module-->
+  <div class="module form-module">
+    <div class="toggle"><i class="fa fa-times fa-pencil"></i>
+      <div class="tooltip">Click Me</div>
+    </div>
+    <div class="form">
+      <h2>Login to your account</h2>
+      <form action="" method="post" novalidate>
+            {{ login_form.hidden_tag() }}
+            {{ login_form.username.label }}<br>
+            {{ login_form.username(size=32) }}<br>
+            {% for error in login_form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            {{ login_form.password.label }}<br>
+            {{ login_form.password(size=32) }}<br>
+            {% for error in login_form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            <p>{{ login_form.remember_me() }} {{ login_form.remember_me.label }}</p>
+
+            {{ login_form.submit() }}
+      </form>
+    </div>
+    <div class="form">
+      <h2>Create an account</h2>
+      <form>
+     <form action="" method="post" novalidate>
+            {{ registration_form.hidden_tag() }}
+            {{ registration_form.username.label }}<br>
+            {{ registration_form.username(size=32) }}<br>
+            {% for error in registration_form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{ registration_form.email.label }}<br>
+            {{ registration_form.email(size=32) }}<br>
+            {% for error in registration_form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{ registration_form.password.label }}<br>
+            {{ registration_form.password(size=32) }}<br>
+            {% for error in registration_form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            {{ registration_form.password_confirm.label }}<br>
+            {{ registration_form.password_confirm(size=32) }}<br>
+            {% for error in registration_form.password_confirm.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+            
+
+            {{ registration_form.submit() }}
+      </form>
+      </form>
+    </div>
+    <div class="cta"><a href="http://andytran.me">Forgot your password?</a></div>
+  </div>
+  <script>
+        $(document).ready(function() {// Toggle Function
+          $('.toggle').click(function(){
+            // Switches the Icon
+            $(this).children('i').toggleClass('fa-pencil');
+            // Switches the forms  
+            $('.form').animate({
+              height: "toggle",
+              'padding-top': 'toggle',
+              'padding-bottom': 'toggle',
+              opacity: "toggle"
+            }, "slow");
+          });
+        });
+        </script>
+            <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+            <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+{% endblock %}
