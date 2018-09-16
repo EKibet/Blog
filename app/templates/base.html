@@ -1,15 +1,22 @@
 {% extends 'bootstrap/base.html'%}
 
 <!-- Navbar block  --> 
-{% block styles %}
+{% block body %}
     {{ super() }}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
-    <script src="/static/js/scripts.js" type="text/javascript"></script>
+
     <link href="/static/css/styles.css" rel="stylesheet">
 
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/static/js/jquery.js" type="text/javascript"></script>
+
+    <script src="/static/js/scripts.js" type="text/javascript"></script>
+    {% endblock %}
+    {% block navbar %}
+        {% include 'navbar.html' %}
 {% endblock %}
 
-</body>
+
