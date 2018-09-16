@@ -8,8 +8,25 @@ from app.models import Post,Comments
 from app import db
 @main.route('/')
 def index():
-    registration_form = RegistrationForm()
-    return render_template('index.html',registration_form=registration_form)
+    # form_comment = CommentForm()
+
+    form_comment = CommentForm()
+    # user=current_user
+    # if current_user.is_authenticated:
+    
+    #     new_comment = Comments(details = str(request.form['comment']),post_id=str(request.form['post']),user=current_user)
+    #     # # save commen
+    #     db.session.add(new_comment)
+    #     db.session.commit()
+    #     newcomments=[new_comment]
+    # if post_form.validate_on_submit():
+    #     user = current_user
+    #     new_post = Post(title = post_form.title.data,post_content=post_form.post.data,category = post_form.category.data,user = user)
+    #     db.session.add(new_post)
+    #     db.session.commit()
+    #     return redirect(url_for('main.writer_dashboard',PostForm=post_form))
+    posts = Post.query.all()
+    return render_template('index.html',type='post',posts=posts)
 
 @main.route('/writer/dashboard', methods=['GET','POST'])
 @login_required
@@ -36,7 +53,6 @@ def new_comment(postid):
     
         new_comment = Comments(details = str(request.form['comment']),post_id=str(request.form['post']),user=current_user)
         # # save commen
-        print('we')
         db.session.add(new_comment)
         db.session.commit()
         newcomments=[new_comment]
