@@ -1,0 +1,36 @@
+{% macro displaycomments(comments) %}
+  {% for comment in comments %}
+  <div>
+    <strong>{{comment.user.username}} : </strong>
+    <span>{{comment.details}}</span>
+  </div>
+  {% endfor %}
+{% endmacro %}
+
+{% macro displayposts(posts,user) %}
+      {% for post in posts %}
+      	<div class="panel panel-default post {{post.category.replace(' ','-')}}" style="display: inline-block" id="post{{post.id}}">
+          <em class="small">{{post.category}}</em>
+          <div class="panel-body"><h5>{{post.post_content}}</h5></div>
+          <div class="panel-footer">
+            <div id="commentssection{{post.id}}" class="commentssection">
+              <div id="comments{{post.id}}">
+                {{displaycomments(post.comments.all())}}
+              </div>
+              {% if user.is_authenticated %}
+                <form class="form form-inline" id="comment{{post.id}}" onsubmit="submitcomment({{post.id}});return false">
+                  <input name="comment" class="form-control commentinput" cols="30" rows="1" placeholder="React ..." required>
+                  <input type="hidden" value="{{post.id}}" name="post">
+                  <button type="submit" class="btn btn-success smaller">send</button>
+                </form>
+              {% endif %}
+            </div>
+            <div class="rightist">
+              <a onclick="$('#commentssection{{post.id}}').slideToggle();$('html,body').animate({scrollTop: $('#post{{post.id}}').offset().top-50},'slow');" class="pull-left">
+                <span id="commentscount{{post.id}}">{{post.comments.count()}}</span> Comments
+              </a>
+            </div>
+          </div>
+      	</div>
+      {% endfor %}
+{% endmacro %}
