@@ -1,56 +1,45 @@
-{% import 'bootstrap/wtf.html' as wtf%}
+{% extends 'base.html' %}
 
-{% extends "base.html" %}
-
+{% import 'macros.html' as macro %}
 {% block content %}
+<script type="text/javascript">
+  submitcomment=(postid)=>{
+    $.post('/comments/'+postid, $('form#comment'+postid).serialize(),(data)=>{
+      $(data).hide().appendTo($('#comments'+postid)).show('fast');
+      count=$('#commentscount'+postid)
+      count.text(parseInt(count.text())+1)
+    });
+    [...$(".commentinput")].forEach(c=>c.value='')
+  }
+</script>
 <div class="form">
-        <h2>Motion Blog</h2>
-        <form action="{{url_for('main.writer_dashboard')}}" method="post" novalidate>
-              {{ PostForm.hidden_tag() }}
-              {{ PostForm.title.label }}<br>
-              {{ PostForm.title(size=32) }}<br>
-              {% for error in PostForm.title.errors %}
-              <span style="color: red;">*{{ error }}*</span>
-              {% endfor %}
-              {{ PostForm.category.label }}<br>
-              {{ PostForm.category }}<br>
-              {% for error in PostForm.category.errors %}
-              <span style="color: red;">*{{ error }}*</span>
-              {% endfor %}
-              {{ PostForm.post.label }}<br>
-              {{ PostForm.post(size=32) }}<br>
-              {% for error in PostForm.post.errors %}
-              <span style="color: red;">*{{ error }}*</span>
-              {% endfor %}  
-              {{ PostForm.submit() }}
-              </form>
-      </div>
+    <h2>Motion Blog</h2>
+    <form action="{{url_for('main.writer_dashboard')}}" method="post" novalidate>
+          {{ PostForm.hidden_tag() }}
+          {{ PostForm.title.label }}<br>
+          {{ PostForm.title(size=32) }}<br>
+          {% for error in PostForm.title.errors %}
+          <span style="color: red;">*{{ error }}*</span>
+          {% endfor %}
+          {{ PostForm.category.label }}<br>
+          {{ PostForm.category }}<br>
+          {% for error in PostForm.category.errors %}
+          <span style="color: red;">*{{ error }}*</span>
+          {% endfor %}
+          {{ PostForm.post.label }}<br>
+          {{ PostForm.post(size=32) }}<br>
+          {% for error in PostForm.post.errors %}
+          <span style="color: red;">*{{ error }}*</span>
+          {% endfor %}  
+          {{ PostForm.submit() }}
+          </form>
+  </div>
 
-      {% for post in posts%}
-      <ul>{{post.username}}</ul>
+{% if type=='post' %}
+  {{ macro.displayposts(posts,current_user) }}
+{% else %}
+  {{ macro.displaycomments(comments) }}
+{% endif %}
 
-      <ul>{{post.title}}</ul>
-      <ul>{{post.category}}</ul>
-      <ul>{{post.post_content}}</ul>
-      <ul>
-            <form action="{{url_for('main.new_comment', id=post.id)}}" method="post" novalidate>
-                    {{ form_comment.hidden_tag() }}
-                   
-                    {{ form_comment.details.label }}<br>
-                    {{ form_comment.details(size=32) }}<br>
-                    {% for error in form_comment.details.errors %}
-                    <span style="color: red;">*{{ error }}*</span>
-                    {% endfor %}  
-                    {{ form_comment.submit() }}
-                    </form>
-        </ul>
-        <ul><a href="{{url_for('main.delete', id=post.id)}}">Delete</a> </ul>
 
-      {%endfor%}
-
-      {% for post in comment%}
-      <ul>{{post.details}}</ul>
-      <ul>
-      {%endfor%}
-      {% endblock %}
-
+{%endblock%}
