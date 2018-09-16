@@ -23,25 +23,25 @@ def writer_dashboard():
         db.session.commit()
         return redirect(url_for('main.writer_dashboard',PostForm=post_form,form_comment=form_comment))
     posts = Post.query.all()
-    return render_template('dashboard.html',PostForm=post_form,posts=posts,form_comment=form_comment)
+    return render_template('dashboard.html',PostForm=post_form,type='post',posts=posts,form_comment=form_comment)
 
-@main.route('/comments/<int:id>', methods = ['GET','POST'])
+@main.route('/comments/<int:postid>', methods = ['GET','POST'])
 @login_required
-def new_comment(id):
+def new_comment(postid):
     post_form = PostForm()
 
     form_comment = CommentForm()
-    if form_comment.validate_on_submit():
-        details = form_comment.details.data
-
-        new_comment = Comments(details = details,post_id=id,user=current_user)
-        # # save comment
+    user=current_user
+    if current_user.is_authenticated:
+    
+        new_comment = Comments(details = str(request.form['comment']),post_id=str(request.form['post']),user=current_user)
+        # # save commen
+        print('we')
         db.session.add(new_comment)
         db.session.commit()
-    comment = Comments.query.filter_by(post_id=id).all()
-
-    return render_template('dashboard.html',form_comment = form_comment,comment=comment,PostForm=post_form)
-
+        newcomments=[new_comment]
+        return render_template('dashboard.html',form_comment = form_comment,type='comment',comments=newcomments,PostForm=post_form,user=user)
+    return ''
 
 @main.route('/delete/<int:id>', methods=['POST','GET'])
 def delete(id):
