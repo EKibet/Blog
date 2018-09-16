@@ -1,1 +1,14 @@
-welcome
+{% extends 'base.html' %}
+
+{% import 'macros.html' as macro %}
+{% block content %}
+
+
+{% if type=='post' %}
+  {{ macro.displayposts(posts,current_user) }}
+{% else %}
+  {{ macro.displaycomments(comments) }}
+{% endif %}
+
+
+{%endblock%}
