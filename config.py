@@ -1,7 +1,7 @@
 import os
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://yego:pass123@localhost/blog'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://yego:pass123@localhost/blog'
     SECRET_KEY=os.environ.get('SECRET_KEY') or '1234'
     MAIL_SERVER ='smtp.googlemail.com'
     MAIL_PORT = 587
