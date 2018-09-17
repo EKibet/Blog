@@ -9,6 +9,7 @@ from app import db
 @main.route('/')
 def index():
     # form_comment = CommentForm()
+    user=current_user
 
     form_comment = CommentForm()
     # user=current_user
@@ -25,8 +26,10 @@ def index():
     #     db.session.add(new_post)
     #     db.session.commit()
     #     return redirect(url_for('main.writer_dashboard',PostForm=post_form))
+    # mail_message("Subscribe to RestMe blog","email/welcome_user",user.email,user=user)
+
     posts = Post.query.all()
-    return render_template('index.html',type='post',posts=posts)
+    return render_template('index.html',type='post',posts=posts, current_user=user)
 
 @main.route('/writer/dashboard', methods=['GET','POST'])
 @login_required
@@ -63,20 +66,32 @@ def new_comment(postid):
 def delete(id):
 
     try:
-        post_form = PostForm()
-        form_comment = CommentForm()
-        posts = Post.query.all()
+        if current_user.is_authenticated:
 
-        fetched_comment = Post.query.filter_by(id=id).first()
-        db.session.delete(fetched_comment)
-        db.session.commit()
-        posts = Post.query.all()
+            post_form = PostForm()
+            form_comment = CommentForm()
+            posts = Post.query.all()
 
-        return render_template('dashboard.html',form_comment = form_comment,posts=posts,PostForm=post_form)
+            fetched_comment = Post.query.filter_by(id=id).first()
+            db.session.delete(fetched_comment)
+            db.session.commit()
+            posts = Post.query.all()
+            return redirect(url_for('main.writer_dashboard'))
+        # send_email("[microblog] %s is now following you!" % follower.nickname,
+        #         [followed.email],render_template("follower_email.txt", user=followed, follower=follower),
+        #         render_template("follower_email.html", user=followed, follower=follower))
     except Exception as e:
 	    return(str(e))
 
-        
+# @app.route('/follow/<email>')
+# @login_required
+# def follow(email):
+#     user = User.query.filter_by(email=email).first()
+#     # ...
+#     subscription_notification(user, g.user)
+#     return redirect(url_for('user', nickname=nickname))
+
+
 # @app.route('/comments')
 # def commentsdic():
 # 	res = Comments.query.all()
