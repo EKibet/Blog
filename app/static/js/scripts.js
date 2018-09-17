@@ -28,7 +28,6 @@ $('document').ready(()=>{
       count=$('#commentscount'+postid)
       count.text(parseInt(count.text())+1)
     });
-    [...$(".commentinput")].forEach(c=>c.value='')
   }
 
   $('.toggle').click(function(){
@@ -41,5 +40,13 @@ $('document').ready(()=>{
       'padding-bottom': 'toggle',
       opacity: "toggle"
     }, "slow");
+  });
+
+  $(function() {
+    $('.search a').on('click', function() {
+        $('.search input').fadeToggle('400').focus();
+        $(this).toggleClass('active');
+        return false;
+    });
   });
 });
