@@ -4,12 +4,14 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_simplemde import SimpleMDE
 
 db = SQLAlchemy()
 mail = Mail()
 boostrap =Bootstrap()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
+simple = SimpleMDE()
 
 '''
 The auth.login is the function(or endpoint) name for the login views
@@ -19,6 +21,7 @@ def create_app(config_name):
     app.config.from_object(config_options[config_name])
     app.config.from_object(Config)
     db.init_app(app)
+    simple.init_app(app)
 
     boostrap.init_app(app)
     login_manager.init_app(app)

@@ -7,6 +7,11 @@
 {{super()}}
 <link href="{{url_for('static',filename='css/styles.css')}}" type="text/css" rel="stylesheet">
 
+  <!--Importing the simple mde css and js files  -->
+  {{ simplemde.css}}
+  {{ simplemde.js }}
+
+{% endblock %}
 {% endblock %}
 {% block body %}
     {{ super() }}

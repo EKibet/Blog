@@ -25,7 +25,7 @@
         {% for error in PostForm.post.errors %}
         <span style="color: red;">*{{ error }}*</span>
         {% endfor %}  
-        {{ PostForm.submit() }}
+        {{ PostForm.submit() }}{{simplemde.load}}
         </form>
 </div>
   {{ macro.displayposts(posts,current_user) }}
