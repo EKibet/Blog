@@ -3,13 +3,17 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
 
-
 class User(UserMixin, db.Model):
     '''
     UserMixin class that includes generic implementations
     that are appropriate for most user model classes
     '''
     __tablename__ = 'users'
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+
     id =db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), index=True, unique = True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -48,9 +52,11 @@ class User(UserMixin, db.Model):
     user by storing its unique identifier in Flask's
     user session.
     ''' 
-    @login_manager.user_loader
-    def load_user(id):
-        return User.query.get(int(id))
+
+    # @login_manager.user_loader
+    # def load_user(id):
+    #     return User.query.get(int(id))
+
 
 class Post(db.Model):
     __tablename__= 'posts'
@@ -64,13 +70,13 @@ class Post(db.Model):
     comments = db.relationship('Comments', 
                                     backref='coment', 
                                     lazy="dynamic")
-    messages_sent = db.relationship('Message',
-                                    foreign_keys='Message.sender_id',
-                                    backref='author', lazy='dynamic')
-    messages_received = db.relationship('Message',
-                                        foreign_keys='Message.recipient_id',
-                                        backref='recipient', lazy='dynamic')
-    last_message_read_time = db.Column(db.DateTime)
+    # messages_sent = db.relationship('Message',
+    #                                 foreign_keys='Message.sender_id',
+    #                                 backref='author', lazy='dynamic')
+    # messages_received = db.relationship('Message',
+    #                                     foreign_keys='Message.recipient_id',
+    #                                     backref='recipient', lazy='dynamic')
+    # last_message_read_time = db.Column(db.DateTime)
 
     # ...
 
@@ -102,16 +108,17 @@ class Comments(db.Model):
     details = db.Column(db.String(255))
     post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    
+    def as_dict(self):
+        return {'details': self.details}    
 
-	# def as_dict(self):
-    # 		return {'details': self.details}    
+# class Message(db.Model):
+#     __tablename__ = 'messages'
+#     id = db.Column(db.Integer, primary_key=True)
+#     sender_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     recipient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     body = db.Column(db.String(140))
+#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Message {}>'.format(self.body)
+#     def __repr__(self):
+#         return '<Message {}>'.format(self.body)
