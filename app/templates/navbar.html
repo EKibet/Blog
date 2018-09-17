@@ -1,0 +1,30 @@
+
+<nav class="menu">
+    <ul class="mainmenu">
+      <li><a href="{{url_for('main.index')}}">Home</a></li>
+      <li><a href="#">Education</a></li>
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Business</a></li>
+      <li><a href="#">Life</a></li>
+
+      <div class="user">
+      {% if current_user.is_authenticated %}
+
+            <li><a href="#"><i class="fa fa-user"></i> {{current_user.username}}</a></li>
+          </div>
+    <li><a href="{{url_for('auth.logout')}}" class="sign">Sign out</a></li>
+    
+      {% else %}
+      <li><a href="{{url_for('auth.login')}}" class="sign">Sign In</a></li> 
+     <li><a href="{{url_for('auth.register')}}" class="sign">Sign Up</a></li> 
+      {% endif %}
+    </ul>
+    </ul>
+    <div class="menuright">
+      <ul class="social">
+        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+      </ul>
+
+    </div>
+  </nav>

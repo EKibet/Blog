@@ -1,0 +1,19 @@
+<form action="{{url_for('main.writer_dashboard')}}" method="post" novalidate>
+  {{ PostForm.hidden_tag() }}
+  {{ PostForm.title.label }}<br>
+  {{ PostForm.title(size=32) }}<br>
+  {% for error in PostForm.title.errors %}
+  <span style="color: red;">*{{ error }}*</span>
+  {% endfor %}
+  {{ PostForm.category.label }}<br>
+  {{ PostForm.category }}<br>
+  {% for error in PostForm.category.errors %}
+  <span style="color: red;">*{{ error }}*</span>
+  {% endfor %}
+  {{ PostForm.post.label }}<br>
+  {{ PostForm.post(size=32) }}<br>
+  {% for error in PostForm.post.errors %}
+  <span style="color: red;">*{{ error }}*</span>
+  {% endfor %}  
+  {{ PostForm.submit() }}
+  </form>
